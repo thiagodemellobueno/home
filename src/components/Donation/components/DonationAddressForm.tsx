@@ -1,7 +1,7 @@
 import React from 'react';
 import DonationCountryDropdown from './DonationCountryDropdown';
 import * as DonationWizard from './DonationWizard';
-
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 export interface Props {
   amount: number;
   defaultValues: {
@@ -20,6 +20,8 @@ const DonationAddressForm: React.FC<Props> = ({
   onEditAmount,
   onSubmit
 }) => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   const handleOnSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.persist();
     e.preventDefault();
@@ -31,6 +33,8 @@ const DonationAddressForm: React.FC<Props> = ({
       zipCode: formData.get('zipCode'),
       country: formData.get('country')
     };
+    const token = await executeRecaptcha();
+    console.log({ token });
 
     onSubmit(data);
   };

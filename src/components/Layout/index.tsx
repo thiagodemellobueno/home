@@ -4,6 +4,7 @@ import SEO from '@components/SEO';
 import logoBlack from '@static/logo-black.png';
 import logoSmall from '@static/logo-small.png';
 import useMembership from '@hooks/useMembership';
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 interface Props {
   children: ReactNode;
@@ -65,7 +66,7 @@ const Layout: React.FC<Props> = ({
   }, [membership, isFetching]);
 
   return (
-    <>
+    <GoogleReCaptchaProvider reCaptchaKey="6Lfw_twZAAAAALGtiJ6np4Y_6D9LcdP4atBfA8Fh">
       <SEO title={title} description={description} />
       <dc-header
         id="dc-header"
@@ -79,7 +80,7 @@ const Layout: React.FC<Props> = ({
       ></dc-header>
       <main className="mt-20">{children}</main>
       <Footer hideNewsletter={hideNewsletter} />
-    </>
+    </GoogleReCaptchaProvider>
   );
 };
 

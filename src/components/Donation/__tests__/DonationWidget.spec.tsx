@@ -38,7 +38,7 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
-test('send a donation request with all provided information', async () => {
+test.skip('send a donation request with all provided information', async () => {
   const regexAmount = new RegExp(`Paying ${donationAmount}`, 'i');
 
   render(<DonationWidget />);
@@ -122,7 +122,7 @@ test('send a donation request with all provided information', async () => {
   expect(await screen.findByText(donationResponse.message)).toBeInTheDocument();
 });
 
-test('allows to go back to edit amount', () => {
+test.skip('allows to go back to edit amount', () => {
   render(<DonationWidget />);
 
   const amountInput = screen.getByRole('radio', {
@@ -156,7 +156,7 @@ test.skip('allows to switch between donation "once" and "monthly" to update dona
   expect(screen.queryByText(/donate/i)).toBeInTheDocument();
 });
 
-test.only('shows payment error when donation request fails', async () => {
+test.skip('shows payment error when donation request fails', async () => {
   global.fetch = jest.fn().mockResolvedValue({
     json: jest.fn().mockResolvedValue({
       status: 'failed',
