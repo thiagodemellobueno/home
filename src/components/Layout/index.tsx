@@ -37,6 +37,22 @@ const POPUP_QUERY = graphql`
   }
 `;
 
+const getAnnouncementModalPropsFromQuery = (queryResult: unknown) => {
+  // @ts-ignore
+  const popup = queryResult.allSanityPopup.edges[0].node;
+  const text = popup._rawText;
+  const imageSrc = popup.popupImage?.asset?.fluid?.srcWebp;
+
+  return {
+    title: popup.title,
+    subtitle: popup.subtitle,
+    ctaText: popup.ctaText,
+    ctaLink: popup.ctaLink,
+    text,
+    imageSrc
+  };
+};
+
 const Layout: React.FC<Props> = ({
   children,
   title,
@@ -44,20 +60,14 @@ const Layout: React.FC<Props> = ({
   hideNewsletter
 }) => {
   const { isOpen: isAnnouncementOpen, closeAnnouncement } = useAnnouncement();
-  const popupQueryResult = useStaticQuery(POPUP_QUERY);
-  const popup = popupQueryResult.allSanityPopup.edges[0].node;
-  const popupText = popup._rawText;
-  const popupImage = popup.popupImage?.asset?.fluid?.srcWebp;
+  const announcementModalProps = getAnnouncementModalPropsFromQuery(
+    useStaticQuery(POPUP_QUERY)
+  );
 
   return (
     <>
       <AnnouncementModal
-        title={popup.title}
-        subtitle={popup.subtitle}
-        text={popupText}
-        imageSrc={popupImage}
-        ctaText={popup.ctaText}
-        ctaLink={popup.ctaLink}
+        {...announcementModalProps}
         isOpen={isAnnouncementOpen}
         onClose={closeAnnouncement}
       />
